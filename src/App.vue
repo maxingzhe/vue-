@@ -1,91 +1,55 @@
 <template>
-  <div class="todo-container">
-    <div class="todo-wrap">
-      <TodoHeader @addTodo="addTodo"/>
-      <TodoMain :todos="todos"/>
-      <TodoFooter>
-        <input type="checkbox" v-model="isCheckAll" slot="check"/>
-        <span slot="size">已完成{{completeSize}} / 全部{{todos.length}}</span>
-        <button class="btn btn-danger" v-show="completeSize" @click="deleteAll" slot="delete">清除已完成任务</button>
-      </TodoFooter>
-    </div>
-  </div>
+  <h2 v-if="!repoName">LODING...</h2>
+  <p v-else>
+    most star repo is
+    <a :href="repoUrl">{{repoName}}</a>
+  </p>
 </template>
 
 <script>
-  import PubSub from 'pubsub-js'
-  import Header from './components/Header.vue'
-  import Main from './components/Main.vue'
-  import Footer from './components/Footer.vue'
-  import storageUtils from './utils/storageUtils'
+  import axios from 'axios'
 export default {
   data(){
     return{
-      todos:storageUtils.readTodos()
+      repoName:'',
+      repoUrl:''
     }
   },
-  computed:{
-    completeSize(){
-      return this.todos.reduce((pre,todo)=>pre+(todo.complete ? 1 : 0),0)
-    },
-    isCheckAll:{
-      get(){
-        return this.todos.length === this.completeSize && this.completeSize > 0
-      },
-      set(value){
-        this.seleteAllTodo(value)
-      }
-    }
-  },
-  mounted(){
-    PubSub.subscribe('deleteTodo',(msg,index)=>{
-      this.deleteTodo(index)
-    })
-  },
-  methods:{
-    addTodo(todo){
-      this.todos.unshift(todo)
-    },
-    deleteTodo(index){
-      this.todos.splice(index,1)
-    },
-    deleteCompleteTodos(){
-      this.todos = this.todos.filter(todo=>!todo.complete)
-    },
-    seleteAllTodo(isCheck){
-      this.todos.forEach(todo=>todo.complete=isCheck)
-    },
-    deleteAll(){
-      if(confirm('你确定要删除全部内容吗？')){
-        this.deleteCompleteTodos()
-      }
-    }
-  },
-  components:{
-    TodoHeader:Header,
-    TodoMain:Main,
-    TodoFooter:Footer
-  },
-  watch:{
-    todos:{
-      deep:true,
-//      handler:function (value) {
-//        storageUtils.saveTodos(value)
-//      }
-      handler:storageUtils.saveTodos
+  async mounted(){
+    const url = 'https://api.github.com/search/repositories?q=v&sort=stars'
+//    this.$http.get(url)
+//      .then(response=>{
+//        const result = response.data
+//        const mostrepo = result.items[0]
+//        this.repoName = mostrepo.name
+//        this.repoUrl = mostrepo.html_url
+//      })
+//      .catch(response=>{
+//        alert('请检查你的网络')
+////      })
+//    axios.get(url)
+//      .then(response=>{
+//        const result = response.data
+//        const mostrepo = result.items[0]
+//        this.repoName = mostrepo.name
+//        this.repoUrl = mostrepo.html_url
+//      })
+//      .catch(response=>{
+//        alert('请检查你的网络，亲')
+//      })
+    try{
+      const response = await axios.get(url)
+      const result = response.data
+      const mostrepo = result.items[0]
+      this.repoName = mostrepo.name
+      this.repoUrl = mostrepo.html_url
+    }catch(e){
+      alart('请检查你的网络，亲~~')
     }
   }
 }
 </script>
 
 <style>
-  .todo-container {
-    width: 600px;
-    margin: 0 auto;
-  }
-  .todo-container .todo-wrap {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
+
 </style>

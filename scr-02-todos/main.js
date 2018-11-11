@@ -1,7 +1,8 @@
 import Vue from 'vue'
-import Vueresource from 'vue-resource'
 import App from './App'
-Vue.use(Vueresource)
+import '../static/index.css'
+Vue.config.productionTip = false
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
