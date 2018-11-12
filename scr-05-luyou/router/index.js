@@ -7,6 +7,7 @@ import News from '../views/News.vue'
 import Messages from '../views/Messages.vue'
 import MessagesDetail from '../views/MessagesDetail.vue'
 export default new VueRouter({
+  mode:'history',
   routes:[
     {
       path:'/about',

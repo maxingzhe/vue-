@@ -1,31 +1,53 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-xs-offset-2 col-xs-8">
-        <div class="page-header"><h2>Router Basic - 01</h2></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-2 col-xs-offset-2">
-        <div class="list-group">
-          <router-link to="/about" class="list-group-item">About</router-link>
-          <router-link to="/home" class="list-group-item">Home</router-link>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="panel">
-          <div class="panel-body">
-            <keep-alive>
-              <router-view/>
-            </keep-alive>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p>click {{count}} times count is {{evenOrOdd}}</p>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+    <button @click="incrementIfOdd">increment if odd</button>
+    <button @click="incrementAsync">increment async</button>
   </div>
 </template>
 
 <script>
+
+  import {mapState, mapGetters, mapActions} from 'vuex'
+
+  export default {
+
+
+    computed: {
+      ...mapState(['count']),  // {count () {return this.$store.state.count}}
+      ...mapGetters(['evenOrOdd']), // {eventOrOdd () {this.$store.getters.evenOrOdd}}
+    },
+
+    methods: {
+      ...mapActions(['increment', 'decrement', 'incrementIfOdd', 'incrementAsync'])
+    }
+
+    /*computed: {
+     evenOrOdd () {
+     return this.$store.getters.evenOrOdd
+     },
+     count () {
+     return this.$store.state.count
+     }
+     },*/
+
+    /*methods: {
+     increment () {
+     this.$store.dispatch('increment')
+     },
+     decrement () {
+     this.$store.dispatch('decrement')
+     },
+     incrementIfOdd () {
+     this.$store.dispatch('incrementIfOdd')
+     },
+     incrementAsync () {
+     this.$store.dispatch('incrementAsync')
+     },
+     }*/
+  }
 
 </script>
 
