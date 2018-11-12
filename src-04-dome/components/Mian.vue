@@ -27,7 +27,8 @@
       }
     },
     mounted(){
-      PubSub.subscribe('search',async (msg,searchName)=>{
+      PubSub.subscribe('serach',async (msg,searchName)=>{
+        console.log(searchName)
         this.firstView = false
         this.loading = true
         this.users =[]
