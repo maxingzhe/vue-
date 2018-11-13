@@ -1,56 +1,35 @@
 <template>
-  <div>
-    <p>click {{count}} times count is {{evenOrOdd}}</p>
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-    <button @click="incrementIfOdd">increment if odd</button>
-    <button @click="incrementAsync">increment async</button>
+  <div class="todo-container">
+    <div class="todo-wrap">
+      <TodoHeader/>
+      <TodoMain/>
+      <TodoFooter/>
+    </div>
   </div>
 </template>
 
 <script>
-
-  import {mapState, mapGetters, mapActions} from 'vuex'
+  import Header from './components/Header.vue'
+  import Main from './components/Main.vue'
+  import Footer from './components/Footer.vue'
 
   export default {
-
-
-    computed: {
-      ...mapState(['count']),  // {count () {return this.$store.state.count}}
-      ...mapGetters(['evenOrOdd']), // {eventOrOdd () {this.$store.getters.evenOrOdd}}
-    },
-
-    methods: {
-      ...mapActions(['increment', 'decrement', 'incrementIfOdd', 'incrementAsync'])
+    components: {
+      TodoHeader: Header,
+      TodoMain: Main,
+      TodoFooter: Footer,
     }
-
-    /*computed: {
-     evenOrOdd () {
-     return this.$store.getters.evenOrOdd
-     },
-     count () {
-     return this.$store.state.count
-     }
-     },*/
-
-    /*methods: {
-     increment () {
-     this.$store.dispatch('increment')
-     },
-     decrement () {
-     this.$store.dispatch('decrement')
-     },
-     incrementIfOdd () {
-     this.$store.dispatch('incrementIfOdd')
-     },
-     incrementAsync () {
-     this.$store.dispatch('incrementAsync')
-     },
-     }*/
   }
-
 </script>
 
 <style>
-
+  .todo-container {
+    width: 600px;
+    margin: 0 auto;
+  }
+  .todo-container .todo-wrap {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
 </style>
